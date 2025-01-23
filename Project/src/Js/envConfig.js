@@ -1,5 +1,4 @@
 /*
-
   This file is used to store the configuration object that contains the environment variables from the .env file.
   The configuration object is exported to be used in the other files.
 
@@ -11,7 +10,6 @@
   - EDAMAM_APP_KEY: The APP Key of the Edamam API.
   - SUPABASE_URL: The base URL of the Supabase API.
   - SUPABASE_ANON_KEY: The API key of the Supabase API.
-
 */
 
 // Import the dotenv package to read the .env file
