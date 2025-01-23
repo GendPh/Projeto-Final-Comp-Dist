@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
     content="Projeto Final de Computação Distribuida - Receitas - Desenvolvimento de Web e Multimédia - 2023/2025">
-  <title>Projeto Final - Receitas</title>
+
+  <meta name="author" content="Gabriel - a28581; Jader:; Ivo:; Tito:; Roberto:;">
+
+  <title>Final Project - Recipes</title>
 
 
   <link rel="stylesheet" href="./src/Css/output.css">
@@ -14,14 +17,34 @@
 
 <body>
 
-  <header class="grid content-center bg-amber-700">
-    <h1>Receitas</h1>
+  <header class="grid content-center bg-amber-700 text-center p-5 py-10 text-3xl font-bold text-white">
+    <h1>Recipes</h1>
   </header>
 
-  <main></main>
+  <main>
+    <section class="p-5">
+      <!-- This article will hold an error message in case of a fail loading the recipes from LoadRecipes.js script -->
+      <article id="failed" class="hidden">
+        <h2 class="font-bold text-center text-3xl">Failed</h2>
+        <p class="text-xl">Failed to load the recipes.</p>
+        <p class="text-xl">Error Message: <span id="error-message"></span></p>
+      </article>
 
-  <footer></footer>
+      <!-- This loader will be seen while the recipes haven't been loaded -->
+      <article id="loader">
+        <h3 class="text-2xl text-center font-bold tracking-widest animate-pulse">Loading recipes</h3>
+        <span class="loader animate-pulse"></span>
+      </article>
 
+
+      <!-- This article will hold the recipes that will be loaded by the LoadRecipes.js or LocalStorageRecipes script -->
+      <article id="recipes-container" class="hidden grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"></article>
+    </section>
+
+
+  </main>
+
+  <script type="module" src="./src/Js/LocalStorageRecipes.js"></script>
 
 </body>
 

@@ -1,3 +1,40 @@
 /* npx tailwindcss -i ./src/Css/input.css -o ./src/Css/output.css --watch */
 
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'animate.css';
+
+
+@layer components {
+  .loader {
+    display: block;
+    position: relative;
+    height: 12px;
+    width: 100%;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      width: 40%;
+      height: 100%;
+      background: #ff3d00;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      animation: animloader 2s linear infinite;
+    }
+  }
+
+  @keyframes animloader {
+    0% {
+      left: 0;
+      transform: translateX(-100%);
+    }
+    100% {
+      left: 100%;
+      transform: translateX(0%);
+    }
+  }
+}
