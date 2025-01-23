@@ -521,17 +521,8 @@
   }
 }
 @layer utilities {
-  .static {
-    position: static;
-  }
-  .contents {
-    display: contents;
-  }
   .grid {
     display: grid;
-  }
-  .inline {
-    display: inline;
   }
   .content-center {
     align-content: center;

@@ -1,0 +1,3 @@
+/* npx tailwindcss -i ./src/Css/input.css -o ./src/Css/output.css --watch */
+
+@import "tailwindcss";
