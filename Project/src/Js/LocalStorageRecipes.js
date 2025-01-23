@@ -67,8 +67,8 @@ const RecipeElement = (recipe) => {
   return `
   <div class="border border-gray-300 p-5 rounded-lg shadow-md animate__animated animate__bounceIn text-balance flex flex-col justify-between gap-y-1">
     <h2 class="text-xl font-bold text-center">${recipe.title}</h2>
-    <img src="${recipe.image}" alt="recipe ${recipe.title}" class="rounded-md">
-    <a href="#?id=${recipe.id}" class="block" target="_self" rel="noopener noreferrer" aria-label="View recipe X" title="View recipe X"> 
+    <img src="${recipe.image}" alt="recipe ${recipe.title}" class="rounded-md min-h-[200px]" >
+    <a href="#?id=${recipe.id}" class="block" target="_self" rel="noopener noreferrer" aria-label="View recipe ${recipe.id}" title="View recipe ${recipe.id}"> 
       <button
               class="cursor-pointer w-full p-1 bg-amber-700 hover:bg-amber-600 transition-colors duration-300 text-white font-bold text-xl rounded-md">View</button>
     </a>
