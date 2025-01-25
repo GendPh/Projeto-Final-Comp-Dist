@@ -4,6 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "live-server --port=3000 --open=public/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,5 +14,8 @@
     "@supabase/supabase-js": "^2.48.0",
     "animate.css": "^4.1.1",
     "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
   }
 }
