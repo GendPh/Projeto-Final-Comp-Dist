@@ -8,6 +8,9 @@ import cors from 'cors';
 // Import the FetchRecipes function
 import { FetchRecipes, FetchNutrition } from './Recipes.js';
 
+// Import Supabase createClient module
+import { createClient } from '@supabase/supabase-js';
+
 // Load the environment variables
 dotenv.config();
 
@@ -22,6 +25,7 @@ app.use(cors({
   origin: '*'
 }));
 
+app.use(express.json());
 
 // Endpoint to fetch a list of recipes
 app.get('/api/recipes', async (req, res) => {
@@ -50,7 +54,6 @@ app.get('/api/recipes', async (req, res) => {
     res.status(500).json({ error: `An unexpected error occurred: ${error.message}` }); // Return a 500 response with the error message
   }
 });
-
 
 // Endpoint to fetch a recipe and its nutritional details
 app.get('/api/recipe/:id', async (req, res) => {
@@ -129,6 +132,53 @@ app.get('/api/recipe/:id', async (req, res) => {
     // Handle unexpected errors such as network issues, API failures, or invalid responses
     console.error("Error fetching recipe:", error.message); // Log the error for debugging
     res.status(500).json({ error: `An error occurred: ${error.message}` }); // Return a 500 response with the error message
+  }
+});
+
+// Create a Supabase client
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
+// Endpoint to handle POST requests for saving data to Supabase
+app.post('/api/supabase', async (req, res) => {
+  // Extract user_Ip and data from the request body
+  const { user_Ip, data } = req.body;
+
+  // Validate that user_Ip and data are present and of the correct types
+  if (!user_Ip || typeof user_Ip !== 'string') {
+    return res.status(400).json({ error: 'Invalid input: user_Ip is required and must be a string.' });
+  }
+
+  if (!data || typeof data !== 'object') {
+    return res.status(400).json({ error: 'Invalid input: data is required and must be an object.' });
+  }
+
+  try {
+    // Insert the provided data into the Supabase table "ProjetoCompDist"
+    const { data: insertedData, error: supabaseError } = await supabase
+      .from('ProjetoCompDist') // Specify the table name
+      .insert([
+        {
+          user_ip: user_Ip, // Save the user's IP address
+          user_data: data,  // Save the associated data
+        },
+      ])
+      .select(); // Retrieve the inserted data for confirmation
+
+    // Check for errors during the insertion process
+    if (supabaseError) {
+      console.error('Supabase error:', supabaseError); // Log the error for debugging
+      return res.status(500).json({ error: 'Failed to save data to Supabase. Please try again later.' });
+    }
+
+    // Respond with a success message and optionally the saved data
+    res.status(200).json({
+      message: 'Data successfully saved to Supabase.',
+      savedData: insertedData,
+    });
+  } catch (err) {
+    // Handle unexpected errors and log them for debugging
+    console.error('Unexpected error:', err);
+    res.status(500).json({ error: 'An unexpected error occurred while saving data.' });
   }
 });
 
