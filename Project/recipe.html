@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Recipe - Information</title>
   <link rel="stylesheet" href="./src/Css/output.css">
 </head>
 
-<body>
+<body class="overflow-hidden">
 
   <header class="grid content-center bg-amber-700 text-center p-5 py-10 text-3xl font-bold text-white">
-    <h1 id="title">Recipe - ...</h1>
+    <h1 id="title" class="hidden animate__animated animate__bounceInDown">Recipe - ...</h1>
   </header>
 
   <main>
@@ -30,16 +30,15 @@
 
 
 
-      <article id="recipe-container" class="hidden">
-        <div>
-          <figure>
-            <img src="" alt="recipe of 'Recipe'" id="recipe-image">
-            <figcaption id="recipe-desc"></figcaption>
+      <article id="recipe-container" class="hidden max-w-[900px] mx-auto">
+        <div class="grid grid-cols-1 gap-5 mb-5 md:grid-cols-2">
+          <figure class="w-fit h-full flex items-center justify-center">
+            <span class="rounded-xl shadow-md shadow-black/80 animate__animated animate__fadeInLeft">
+              <img src="" alt="recipe of 'Recipe'" id="recipe-image" class="rounded-xl w-full object-cover">
+            </span>
           </figure>
-        </div>
 
-        <div>
-          <table class="w-full border text-center max-w-2xl mx-auto">
+          <table class="w-full border text-center text-sm animate__animated animate__fadeInRight">
             <thead class="border-b">
               <tr>
                 <th class="p-1">Amount</th>
@@ -51,21 +50,25 @@
             <tbody id="ingredients">
             </tbody>
 
-            <tfoot>
+            <tfoot class="font-bold">
               <tr>
                 <td colspan="2" class="border-r">Total Calories</td>
                 <td colspan="2" class="p-1" id="total-calories">3 Kcal</td>
               </tr>
             </tfoot>
           </table>
+
         </div>
+
+        <p id="recipe-desc" class="animate__animated animate__bounceIn"></p>
+
       </article>
     </section>
 
   </main>
 
 
-  <script src="./src/Js/recipe.js"></script>
+  <script src="./src/Js/LoadRecipe.js"></script>
 </body>
 
 </html>

@@ -1,88 +1,41 @@
-// When window loads fetch the recipe information
+/**
+ * When the window is loaded, this function fetches the user's IP,
+ * retrieves the recipe information, and sends the data to Supabase.
+ */
 window.onload = async () => {
+  try {
+    // Fetch the user's IP address asynchronously
+    const userIp = await getUserIp();
 
-  // local data
-  /* const recipe = {
-    "title": "Easy Homemade Rice and Beans",
-    "image": "https://img.spoonacular.com/recipes/716627-556x370.jpg",
-    "desc": "Easy Homemade Rice and Beans is a main course that serves 2. One serving contains <b>446 calories</b>, <b>19g of protein</b>, and <b>4g of fat</b>. For <b>$1.06 per serving</b>, this recipe <b>covers 26%</b> of your daily requirements of vitamins and minerals. A mixture of optional: of hot sauce, canned tomatoes, water, and a handful of other ingredients are all it takes to make this recipe so yummy. This recipe from cooking2perfection.blogspot.com has 471 fans. It is a good option if you're following a <b>gluten free, dairy free, lacto ovo vegetarian, and vegan</b> diet. From preparation to the plate, this recipe takes around <b>35 minutes</b>. Overall, this recipe earns a <b>tremendous spoonacular score of 98%</b>. <a href=\"https://spoonacular.com/recipes/easy-homemade-rice-and-beans-1311839\">Easy Homemade Rice and Beans</a>, <a href=\"https://spoonacular.com/recipes/easy-homemade-rice-and-beans-1303021\">Easy Homemade Rice and Beans</a>, and <a href=\"https://spoonacular.com/recipes/easy-homemade-rice-and-beans-1230117\">Easy Homemade Rice and Beans</a> are very similar to this recipe.",
-    "ingredients": [
-      {
-        "name": "black beans",
-        "amount": 15,
-        "unit": "ounce",
-        "calories": 1450
-      },
-      {
-        "name": "canned tomatoes",
-        "amount": 10,
-        "unit": "ounce",
-        "calories": 45
-      },
-      {
-        "name": "chili powder",
-        "amount": 2,
-        "unit": "tsp",
-        "calories": 15
-      },
-      {
-        "name": "cumin",
-        "amount": 0.5,
-        "unit": "tsp",
-        "calories": 3
-      },
-      {
-        "name": "ground pepper",
-        "amount": 0.25,
-        "unit": "tsp",
-        "calories": 1
-      },
-      {
-        "name": "optional: of hot sauce",
-        "amount": 4,
-        "unit": "dashes",
-        "calories": 0
-      },
-      {
-        "name": "olive oil",
-        "amount": 1,
-        "unit": "tsp",
-        "calories": 39
-      },
-      {
-        "name": "onion",
-        "amount": 0.25,
-        "unit": "cup",
-        "calories": 16
-      },
-      {
-        "name": "rice",
-        "amount": 0.5,
-        "unit": "cup",
-        "calories": 351
-      },
-      {
-        "name": "water",
-        "amount": 3,
-        "unit": "Tbsp",
-        "calories": 0
-      }
-    ],
-    "total": 1920
-  } */
+    // Check if the user's IP was successfully fetched
+    if (!userIp) {
+      return ShowFailed("Failed to retrieve user IP.");
+    }
 
-  //Recipe information
-  const recipe = await FetchRecipe();
+    // Fetch the recipe information asynchronously
+    const recipe = await FetchRecipe();
 
-  console.log(recipe);
+    // Check if the recipe data was successfully fetched
+    if (recipe.error) {
+      return ShowFailed(`Recipe fetch failed: ${recipe.error}`);
+    }
 
-  // If no error shows the recipe container other wise shows a failed container with message
-  if (!recipe.error) {
-    ShowRecipe(recipe)
-  } else {
-    ShowFailed(recipe.error)
+    // Attempt to save the recipe data to Supabase
+    const sentDataToSupabase = await saveDataToSupabase(userIp, recipe);
+
+    // If there was an error sending data to Supabase, show the error
+    if (sentDataToSupabase.error) {
+      return ShowFailed(`Failed to save data to Supabase: ${sentDataToSupabase.error}`);
+    }
+
+    // Show the recipe if no errors occurred
+    ShowRecipe(recipe);
+  } catch (error) {
+    // Catch any unexpected errors that may have occurred
+    ShowFailed(`Unexpected error: ${error.message || error}`);
   }
-}
+};
+
 
 // Fetches a specific recipe by its ID, obtained from the URL query parameters.
 async function FetchRecipe() {
@@ -143,6 +96,104 @@ async function FetchRecipe() {
   }
 }
 
+/**
+ * Function to save data to the Supabase API.
+ *
+ * @param {string} userIp - The user's IP address to be saved.
+ * @param {Object} data - The data object containing the information to save.
+ * @returns {Object} - Returns the response from the API or an error object.
+ */
+async function saveDataToSupabase(userIp, data) {
+  // Base URL for the API endpoint
+  const apiUrl = "http://localhost:4000/api/supabase";
+
+  // Validate inputs to ensure they are provided and correctly formatted
+  if (!userIp || typeof userIp !== "string") {
+    return { error: "Invalid user IP. It must be a non-empty string." };
+  }
+  if (!data || typeof data !== "object") {
+    return { error: "Invalid data. It must be a non-null object." };
+  }
+
+  try {
+    // Make the POST request to the API
+    const response = await fetch(apiUrl, {
+      method: "POST", // Specify the HTTP method
+      headers: {
+        "Content-Type": "application/json", // Indicate JSON content
+      },
+      body: JSON.stringify({ user_Ip: userIp, data }), // Send the payload as a JSON string
+    });
+
+    // Handle HTTP errors if the response is not in the 2xx range
+    if (!response.ok) {
+      let errorMessage;
+      try {
+        // Attempt to parse the error response as JSON
+        const error = await response.json();
+        errorMessage = error.error || `HTTP error ${response.status}: ${response.statusText}`;
+      } catch {
+        // Fallback for non-JSON error responses
+        errorMessage = `HTTP error ${response.status}: ${response.statusText}`;
+      }
+      return { error: errorMessage };
+    }
+
+    // Parse and return the API response
+    const result = await response.json();
+
+    // Validate the expected structure of the API response
+    if (!result || typeof result !== "object") {
+      return { error: "Unexpected response format from API." };
+    }
+
+    return result; // Return the parsed response
+  } catch (err) {
+    // Handle network or unexpected errors
+    return { error: err.message || "An unexpected error occurred while saving data." };
+  }
+}
+
+
+/**
+ * Function to fetch the user's public IP address using the ipify API.
+ *
+ * @returns {Promise<string|null>} - Returns the user's IP address as a string, 
+ *                                   or null if an error occurs.
+ */
+async function getUserIp() {
+  try {
+    const response = await fetch("https://api64.ipify.org?format=json");
+
+    // Check if the response is successful
+    if (!response.ok) {
+      console.error(`Failed to fetch IP. HTTP error ${response.status}: ${response.statusText}`);
+      return null; // Return null if the request fails
+    }
+
+    // Parse the JSON response
+    const data = await response.json();
+
+    // Validate the expected structure of the response
+    if (!data || typeof data.ip !== "string") {
+      console.error("Unexpected response format from IP API.");
+      return null; // Return null if the structure is invalid
+    }
+
+    console.log(data.ip)
+
+    return data.ip; // Return the user's IP address
+  } catch (error) {
+    // Handle network or unexpected errors
+    console.error("Error fetching user IP:", error.message || error);
+    return null; // Return null if an exception occurs
+  }
+}
+
+
+
+
+
 
 // DOM elements for various sections of the page.
 // Loader element shown while data is being fetched.
@@ -166,12 +217,13 @@ const failedMessageEl = document.getElementById("error-message");
 
 // Function to display the recipe details on the page.
 function ShowRecipe(recipe) {
+
   // Hide the loader by adding the "hidden" class to its container.
   loaderContainer.classList.add("hidden");
 
   // Update the page title with the recipe's title.
   titleEl.textContent = "Recipe - " + recipe.title;
-
+  titleEl.classList.remove("hidden")
   // Show the recipe container by replacing the "hidden" class with "block".
   recipeContainer.classList.replace("hidden", "block");
 
