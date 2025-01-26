@@ -7,7 +7,5 @@ services:
     ports:
       - "3000:3000"
     container_name: nosso-20
-
-
     env_file:
      - .env

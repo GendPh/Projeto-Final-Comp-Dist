@@ -1,85 +1,76 @@
-import { spoonacularApiConfig } from "./envConfig.js";
-import { RecipeElement } from "./LocalStorageRecipes.js";
+// This file is responsible for fetching the recipes from the API and displaying them on the page using JavaScript. 
+// The FetchRecipes function is called when the page loads, and it fetches the recipes from the API. 
+// If the request is successful, the recipes are displayed on the page. If there is an error, an error message is displayed instead.
 
-async function FetchRecipes() {
-  // Create an AbortController instance to abort the fetch request if it takes too long
-  const controller = new AbortController();
-  // Timeout of 5 seconds
-  const timeout = setTimeout(() => controller.abort(), 5000);
-
-  try {
-    // Fetch the recipes from the Spoonacular API
-    const response = await fetch(`${spoonacularApiConfig.url}?apiKey=${spoonacularApiConfig.apiKey}&number=10&offset=0`, { signal: controller.signal });
-
-    // Clear the timeout when the fetch request is complete
-    clearTimeout(timeout);
-
-    // Check if the response is successful
-    if (!response.ok) {
-      // Get the error message from the response
-      const error = await response.json();
-      // Check if the error is due to an invalid or missing API key
-      if (response.status === 401 || response.status === 403) {
-        return { error: "Invalid or missing API key" };
-      }
-      // Check if the error is due to rate limiting
-      if (response.status === 429) {
-        return { error: "Rate limit exceeded. Please try again later." };
-      }
-      // Return the error message
-      return { error: error.message || `HTTP error ${response.status}: ${response.statusText}` };
-    }
-
-    // Parse the response as JSON data
-    const data = await response.json();
-
-    // Check if the data is valid
-    if (!data || !Array.isArray(data.results)) {
-      return { error: "Invalid or missing data in the response" };
-    }
-
-    // Check if the data contains any recipes or not
-    if (!data.results.length) {
-      return { error: "No recipes found" };
-    }
-
-    // Return the recipes data
-    return { results: data.results };
-
-  } catch (error) {
-    // Clear the timeout when an error occurs
-    clearTimeout(timeout);
-
-    // Check if the fetch request was aborted
-    if (error.name === "AbortError") {
-      return { error: "Request timed out" };
-    }
-
-    // Check if there is no internet connection
-    if (!navigator.onLine) {
-      return { error: "No internet connection" };
-    }
-
-    // Return the error message
-    return { error: error.message || "An unexpected error occurred" };
-  }
-}
-
-
-
-
+// Variables to store the loader, recipes container, and failed container
 const loaderContainer = document.getElementById('loader');
 const recipesContainer = document.getElementById('recipes-container');
 const failedContainer = document.getElementById('failed');
 
+// Function to create the recipe element
+const RecipeElement = (recipe) => {
+  return `
+  <div class="border border-gray-300 p-5 rounded-lg shadow-md animate__animated animate__bounceIn text-balance flex flex-col justify-between gap-y-1">
+    <h2 class="text-xl font-bold text-center">${recipe.title}</h2>
+    <img src="${recipe.image}" alt="recipe ${recipe.title}" class="rounded-md min-h-[200px]" >
+    <a href="#?id=${recipe.id}" class="block" target="_self" rel="noopener noreferrer" aria-label="View recipe ${recipe.id}" title="View recipe ${recipe.id}"> 
+      <button
+              class="cursor-pointer w-full p-1 bg-amber-700 hover:bg-amber-600 transition-colors duration-300 text-white font-bold text-xl rounded-md">View</button>
+    </a>
+  </div>
+  `;
+};
+
+
+// Function to show the recipes
+function ShowRecipes(recipes) {
+  // Set a timeout of 2s to simulate loading time
+  setTimeout(() => {
+    // Toggle the hidden class to hide the loader
+    loaderContainer.classList.add("hidden");
+    // Toggle the hidden class to show the recipes container
+    recipesContainer.classList.replace("hidden", "grid");
+    // Loop through the recipes and add them to the recipes container
+    recipes.forEach(recipe => {
+      recipesContainer.innerHTML += RecipeElement(recipe);
+    });
+  }, 2000);
+}
+
+// Function to show the error message
+function ShowFailed(message) {
+  // Set a timeout of 1s to simulate loading time
+  const failedSpan = document.getElementById('error-message');
+  setTimeout(() => {
+    // Toggle the hidden class to hide the loader
+    loaderContainer.classList.add("hidden");
+    // Toggle the hidden class to show the error container
+    failedContainer.classList.replace("hidden", "block");
+    // Set the error message
+    failedSpan.textContent = message;
+  }, 1000);
+}
+
+async function FetchRecipes() {
+  try {
+    const response = await fetch('http://localhost:4000/api/recipes');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+// Window load event listener to fetch the recipes when the page loads and display them
 window.onload = async () => {
+  // Fetch the recipes from the API
   const recipes = await FetchRecipes();
 
   if (recipes.results) {
-    console.log("Recipes: ", recipes.results);
+    ShowRecipes(recipes.results);
     // Handle the results here
   } else if (recipes.error) {
-    console.log("Error: ", recipes.error);
     // Handle the error here
+    ShowFailed(recipes.error);
   }
 }
