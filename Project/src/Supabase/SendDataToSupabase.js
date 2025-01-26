@@ -1,5 +1,7 @@
 // Supabase API configuration object
 import { supabase } from './supabase_config.js';
+// import { getUserIpAddress } from "../Js/GetUserIP.js";
+
 
 // Function to check the ProjetoCompDist table in the Supabase database
 const checkTable = async () => {
@@ -26,4 +28,30 @@ const checkTable = async () => {
 };
 
 // Call the checkTable function
-checkTable();
+//checkTable();
+
+// Function to insert data into the ProjetoCompDist table in the Supabase database
+// The data parameter is the object that will hold the user ip and json data {user_ip: data.ip, user_data: data.json}
+const insertData = async (data) => {
+  // const userIp = await getUserIpAddress();
+
+  try {
+    const { data, error } = await supabase
+      .from('ProjetoCompDist')
+      .insert([
+        { user_ip: data.ip, user_data: data.json },
+      ])
+      .select()
+
+
+    if (error) {
+      console.error('Erro ao buscar dados:', error);
+    } else {
+      console.log('Dados enviados:', data);
+    }
+  } catch (err) {
+    console.error('Erro inesperado:', err);
+  }
+};
+
+insertData();

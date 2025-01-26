@@ -1,3 +1,6 @@
+
+
+
 // Storage inf the recipes fetched from the API to not run over and over and waste calls
 const first10Recipes = [
   {
@@ -63,7 +66,7 @@ const first10Recipes = [
 ];
 
 
-const RecipeElement = (recipe) => {
+export const RecipeElement = (recipe) => {
   return `
   <div class="border border-gray-300 p-5 rounded-lg shadow-md animate__animated animate__bounceIn text-balance flex flex-col justify-between gap-y-1">
     <h2 class="text-xl font-bold text-center">${recipe.title}</h2>
@@ -76,6 +79,8 @@ const RecipeElement = (recipe) => {
   `;
 };
 
+
+const window = globalThis;
 
 /* 
 Load the recipes from the storage and display them on the page
@@ -95,5 +100,3 @@ window.onload = async () => {
     });
   }, 2000);
 };
-
-export default RecipeElement;

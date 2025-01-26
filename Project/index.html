@@ -1,15 +1,17 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
     content="Projeto Final de Computação Distribuida - Receitas - Desenvolvimento de Web e Multimédia - 2023/2025">
+    
+    <meta name="author" content="Gabriel - a28581; Jader - a27473; Ivo - a28583:; Tito:; Roberto:;">
+    
+    <title>Final Project - Recipes</title>
 
-  <meta name="author" content="Gabriel - a28581; Jader - a27473; Ivo - a28583:; Tito:; Roberto:;">
-
-  <title>Final Project - Recipes</title>
 
 
   <link rel="stylesheet" href="./src/Css/output.css">
@@ -22,7 +24,7 @@
   </header>
 
   <main>
-    <section class="p-5">
+    <section class="p-5 lg:px-20">
       <!-- This article will hold an error message in case of a fail loading the recipes from LoadRecipes.js script -->
       <article id="failed" class="hidden">
         <h2 class="font-bold text-center text-3xl">Failed</h2>
@@ -44,7 +46,12 @@
 
   </main>
 
-  <script type="module" src="./src/Js/LocalStorageRecipes.js"></script>
+
+  <script src="./src/Js/LoadRecipes.js"></script>
+
+
+  
+  <!-- <script type="module" src="./src/Js/LocalStorageRecipes.js"></script> -->
 
 </body>
 

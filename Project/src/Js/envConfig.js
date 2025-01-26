@@ -11,33 +11,49 @@
   - SUPABASE_URL: The base URL of the Supabase API.
   - SUPABASE_ANON_KEY: The API key of the Supabase API.
 */
-
-// Import the dotenv package to read the .env file
+/* 
+// Import the dotenv package
 import dotenv from 'dotenv';
-// Read the .env file
+
+// Load the .env file
 dotenv.config();
 
 // Spoonacular API configuration object
 const spoonacularApiConfig = {
-  // The base URL of the Spoonacular API
-  url: process.env["SPOONACULAR_URL"],
-  // The API key of the Spoonacular
-  apiKey: process.env["SPOONACULAR_KEY"]
-}
+  url: process.env.SPOONACULAR_URL,
+  apiKey: process.env.SPOONACULAR_KEY,
+};
+
+console.log('Loaded Spoonacular Config:', spoonacularApiConfig);
 
 // Edamam API configuration object
 const edamamApiConfig = {
-  // The base URL of the Edamam API with the APP ID and APP Key
-  url: process.env["EDAMAM_APP_URL"] + "app_id=" + process.env["EDAMAM_APP_ID"] + "&app_key=" + process.env["EDAMAM_APP_KEY"],
-}
+  url: process.env.EDAMAM_APP_URL + "app_id=" + process.env.EDAMAM_APP_ID + "&app_key=" + process.env.EDAMAM_APP_KEY,
+};
 
 // Supabase API configuration object
 const supabaseConfig = {
-  // The base URL of the Supabase API
-  url: process.env["SUPABASE_URL"],
-  // The API key of the Supabase API
-  apiKey: process.env["SUPABASE_ANON_KEY"]
-}
+  url: process.env.SUPABASE_URL,
+  apiKey: process.env.SUPABASE_ANON_KEY,
+};
 
-// Export the configuration object
+// console.log(spoonacularApiConfig, edamamApiConfig, supabaseConfig);
+
 export { spoonacularApiConfig, edamamApiConfig, supabaseConfig };
+ */
+
+
+// env.js
+import { config } from 'dotenv';
+config();  // Carrega as variáveis do arquivo .env
+
+// Expondo as variáveis para o front-end
+window.env = {
+  SPOONACULAR_URL: process.env.SPOONACULAR_URL,
+  SPOONACULAR_KEY: process.env.SPOONACULAR_KEY,
+  EDAMAM_APP_URL: process.env.EDAMAM_APP_URL,
+  EDAMAM_APP_ID: process.env.EDAMAM_APP_ID,
+  EDAMAM_APP_KEY: process.env.EDAMAM_APP_KEY,
+  SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+};

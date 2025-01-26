@@ -521,9 +521,6 @@
   }
 }
 @layer utilities {
-  .static {
-    position: static;
-  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -542,14 +539,8 @@
       max-width: 96rem;
     }
   }
-  .m-5 {
-    margin: calc(var(--spacing) * 5);
-  }
   .block {
     display: block;
-  }
-  .contents {
-    display: contents;
   }
   .flex {
     display: flex;
@@ -560,17 +551,14 @@
   .hidden {
     display: none;
   }
-  .inline {
-    display: inline;
+  .table {
+    display: table;
   }
   .min-h-\[200px\] {
     min-height: 200px;
   }
   .w-full {
     width: 100%;
-  }
-  .animate-bounce {
-    animation: var(--animate-bounce);
   }
   .animate-pulse {
     animation: var(--animate-pulse);
@@ -678,6 +666,11 @@
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .lg\:px-20 {
+    @media (width >= 64rem) {
+      padding-inline: calc(var(--spacing) * 20);
     }
   }
 }
