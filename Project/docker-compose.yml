@@ -1,9 +1,25 @@
-version: '3.8'
 services:
-  web:
-    build: .
+  server:
+    build:
+      context: ../Server
+    container_name: server-container
+    ports:
+      - "4000:4000"
     volumes:
-      - .:/usr/src/app:delegated
+      - ../Server:/usr/src/app
+    env_file:
+      - ../Server/.env
+    command: ["npm", "start"]
+
+  project:
+    build:
+      context: .
+    container_name: project-container
+    depends_on:
+      - server
     ports:
       - "3000:3000"
-    container_name: nosso-20
+    volumes:
+      - .:/usr/src/app:cached
+      - /usr/src/app/node_modules  #Essa configuração mantém os arquivos do host sincronizados, mas preserva as dependências instaladas no contêiner.
+    command: sh -c "until nc -z server 4000; do echo 'Waiting for server...'; sleep 2; done && npm start" #essa linha faz com que aguarde o server estar pronto antes de iniciar o projeto, a fim de evitar problemas de fetch

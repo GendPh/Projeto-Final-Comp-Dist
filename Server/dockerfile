@@ -1,0 +1,18 @@
+# Usando imagem base Node.js
+FROM node:18
+
+# Criar e mover para o diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copiar os arquivos necessários
+COPY package*.json ./
+RUN npm install
+
+# Copiar o restante do código
+COPY . .
+
+# Expor a porta
+EXPOSE 4000
+
+# Comando para iniciar o servidor
+CMD ["npm", "start"]
