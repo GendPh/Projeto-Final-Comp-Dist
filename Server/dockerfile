@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Expor a porta
-EXPOSE 5000
+EXPOSE 4000
 
 # Comando para iniciar o servidor
 CMD ["npm", "start"]
