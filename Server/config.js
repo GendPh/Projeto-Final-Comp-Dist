@@ -19,7 +19,7 @@ const port = process.env.SERVER_PORT || 4000;
 // Enable CORS
 app.use(cors({
   // Allow requests from the specified origin only (frontend application)
-  origin: 'http://127.0.0.1:3000'
+  origin: '*', // Permite todas as origens (ajuste para produção)
 }));
 
 

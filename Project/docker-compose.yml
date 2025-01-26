@@ -5,11 +5,11 @@ services:
       context: ../Server
     container_name: server-container
     ports:
-      - "5000:5000"
+      - "4000:4000"
     volumes:
       - ../Server:/usr/src/app
     env_file:
-      - ../Server/.env # O .env é carregado apenas no serviço "server"
+      - ../Server/.env
     command: ["npm", "start"]
 
   project:
@@ -22,4 +22,4 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
-    command: ["npm", "start"]
+    command: sh -c "until nc -z server 4000; do echo 'Waiting for server...'; sleep 2; done && npm start" #essa linha faz com que aguarde o server estar pronto antes de iniciar o projeto, a fim de evitar problemas de fetch

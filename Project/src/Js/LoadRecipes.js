@@ -53,7 +53,7 @@ function ShowFailed(message) {
 
 async function FetchRecipes() {
   try {
-    const response = await fetch('http://localhost:4000/api/recipes');
+    const response = await fetch('http://server:4000/api/recipes'); //alterado de localhost para server, a fim de funcionar no ambiente docker
     const data = await response.json();
     return data;
   } catch (error) {
