@@ -11,7 +11,7 @@
   - SUPABASE_URL: The base URL of the Supabase API.
   - SUPABASE_ANON_KEY: The API key of the Supabase API.
 */
-
+/* 
 // Import the dotenv package
 import dotenv from 'dotenv';
 
@@ -40,3 +40,20 @@ const supabaseConfig = {
 // console.log(spoonacularApiConfig, edamamApiConfig, supabaseConfig);
 
 export { spoonacularApiConfig, edamamApiConfig, supabaseConfig };
+ */
+
+
+// env.js
+import { config } from 'dotenv';
+config();  // Carrega as variáveis do arquivo .env
+
+// Expondo as variáveis para o front-end
+window.env = {
+  SPOONACULAR_URL: process.env.SPOONACULAR_URL,
+  SPOONACULAR_KEY: process.env.SPOONACULAR_KEY,
+  EDAMAM_APP_URL: process.env.EDAMAM_APP_URL,
+  EDAMAM_APP_ID: process.env.EDAMAM_APP_ID,
+  EDAMAM_APP_KEY: process.env.EDAMAM_APP_KEY,
+  SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+};
