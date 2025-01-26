@@ -3,6 +3,11 @@
 @import 'tailwindcss';
 @import 'animate.css';
 
+@layer base {
+  a {
+    @apply underline;
+  }
+}
 
 @layer components {
   .loader {
@@ -24,6 +29,29 @@
       left: 0;
       box-sizing: border-box;
       animation: animloader 2s linear infinite;
+    }
+  }
+
+  .loader-recipe {
+    font-size: 4.5rem;
+    color: black;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    position: relative;
+    &:after {
+      content: '';
+      height: 6px;
+      width: 0%;
+      display: block;
+      background: #ff3d00;
+      animation: 2s lineGrow linear infinite;
+    }
+  }
+
+  @keyframes lineGrow {
+    to {
+      width: 100%;
     }
   }
 

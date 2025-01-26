@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./src/Css/output.css">
+</head>
+
+<body>
+
+  <header class="grid content-center bg-amber-700 text-center p-5 py-10 text-3xl font-bold text-white">
+    <h1 id="title">Recipe - ...</h1>
+  </header>
+
+  <main>
+    <section class="p-5 lg:px-20">
+      <!-- This article will hold an error message in case of a fail loading the recipes from LoadRecipes.js script -->
+      <article id="failed" class="hidden">
+        <h2 class="font-bold text-center text-3xl">Failed</h2>
+        <p class="text-xl">Failed to load the recipe.</p>
+        <p class="text-xl">Error Message: <span id="error-message"></span></p>
+      </article>
+
+      <!-- This loader will be seen while the recipes haven't been loaded -->
+      <article id="loader" class="text-center animate-pulse">
+        <span class="loader-recipe">Loading</span>
+      </article>
+
+
+
+      <article id="recipe-container" class="hidden">
+        <div>
+          <figure>
+            <img src="" alt="recipe of 'Recipe'" id="recipe-image">
+            <figcaption id="recipe-desc"></figcaption>
+          </figure>
+        </div>
+
+        <div>
+          <table class="w-full border text-center max-w-2xl mx-auto">
+            <thead class="border-b">
+              <tr>
+                <th class="p-1">Amount</th>
+                <th class="p-1 border-x">Unit</th>
+                <th class="p-1 border-r">Ingredients</th>
+                <th class="p-1">Nut</th>
+              </tr>
+            </thead>
+            <tbody id="ingredients">
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td colspan="2" class="border-r">Total Calories</td>
+                <td colspan="2" class="p-1" id="total-calories">3 Kcal</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+
+  <script src="./src/Js/recipe.js"></script>
+</body>
+
+</html>
