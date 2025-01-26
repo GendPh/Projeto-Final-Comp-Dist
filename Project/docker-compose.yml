@@ -1,11 +1,25 @@
 version: '3.8'
 services:
-  web:
-    build: .
+  server:
+    build:
+      context: ../Server
+    container_name: server-container
+    ports:
+      - "5000:5000"
     volumes:
-      - .:/usr/src/app:delegated
+      - ../Server:/usr/src/app
+    env_file:
+      - ../Server/.env # O .env é carregado apenas no serviço "server"
+    command: ["npm", "start"]
+
+  project:
+    build:
+      context: .
+    container_name: project-container
+    depends_on:
+      - server
     ports:
       - "3000:3000"
-    container_name: nosso-20
-    env_file:
-     - .env
+    volumes:
+      - .:/usr/src/app
+    command: ["npm", "start"]
