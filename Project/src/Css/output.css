@@ -539,6 +539,9 @@
       max-width: 96rem;
     }
   }
+  .mx-auto {
+    margin-inline: auto;
+  }
   .block {
     display: block;
   }
@@ -559,6 +562,12 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-2xl {
+    max-width: var(--container-2xl);
+  }
+  .animate-ping {
+    animation: var(--animate-ping);
   }
   .animate-pulse {
     animation: var(--animate-pulse);
@@ -593,6 +602,18 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .border-x {
+    border-inline-style: var(--tw-border-style);
+    border-inline-width: 1px;
+  }
+  .border-r {
+    border-right-style: var(--tw-border-style);
+    border-right-width: 1px;
+  }
+  .border-b {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
   }
   .border-gray-300 {
     border-color: var(--color-gray-300);
@@ -4248,6 +4269,11 @@
   -webkit-animation-name: slideOutUp;
   animation-name: slideOutUp;
 }
+@layer base {
+  a {
+    text-decoration-line: underline;
+  }
+}
 @layer components {
   .loader {
     display: block;
@@ -4267,6 +4293,27 @@
       left: 0;
       box-sizing: border-box;
       animation: animloader 2s linear infinite;
+    }
+  }
+  .loader-recipe {
+    font-size: 4.5rem;
+    color: black;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    position: relative;
+    &:after {
+      content: '';
+      height: 6px;
+      width: 0%;
+      display: block;
+      background: #ff3d00;
+      animation: 2s lineGrow linear infinite;
+    }
+  }
+  @keyframes lineGrow {
+    to {
+      width: 100%;
     }
   }
   @keyframes animloader {
