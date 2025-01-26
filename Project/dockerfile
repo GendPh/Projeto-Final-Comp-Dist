@@ -13,7 +13,7 @@ RUN npm install && apt-get update && apt-get install -y netcat-openbsd && npm ca
 # Copiar o restante do código
 COPY . .
 
-# Expondo a porta de aplicação (neste caso, a porta 3000)
+# Expondo a porta de aplicação
 EXPOSE 3000
 
 # Comando para rodar a aplicação
