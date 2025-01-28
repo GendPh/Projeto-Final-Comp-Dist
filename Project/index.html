@@ -39,7 +39,24 @@
 
 
       <!-- This article will hold the recipes that will be loaded by the LoadRecipes.js or LocalStorageRecipes script -->
-      <article id="recipes-container" class="hidden grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"></article>
+      <article id="recipes-container" class="hidden">
+        <form class="relative mb-5" onsubmit="searchRecipe(event)">
+          <input type="text" name="search-recipe" id="search-recipe" class="w-full border rounded-lg p-2"
+            placeholder="Search for a recipe">
+
+          <button type="submit"
+            class="absolute right-2 top-[50%] -translate-y-[50%] cursor-pointer active:scale-90 transition-transform duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-search">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </form>
+
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3" id="recipes"></div>
+      </article>
     </section>
 
 
