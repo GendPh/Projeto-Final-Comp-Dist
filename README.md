@@ -12,6 +12,13 @@ Certifique-se de que o Docker e o Docker Compose estão instalados em sua máqui
 git clone https://github.com/GendPh/Projeto-Final-Comp-Dist.git
 cd Projeto-Final-Comp-Dist
 
+### Ao clonar o repositório, terá acesso ao código integral, no entanto é possível rodar os containeres apenas com a seguinte estrutura:
+ - Project
+    - docker-compose.yml
+    - run-container.sh --> não é essencial mas facilita o launch
+ - Server
+    - .env
+
 ## Configure o arquivo .env
 No diretório Server, renomeie o arquivo .env.example para .env e configure as variáveis de ambiente necessárias.
 
