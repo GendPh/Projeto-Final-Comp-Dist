@@ -1,7 +1,6 @@
-version: '3.9'
 services:
   server:
-    image: jaderwtb/cd-01_2025-server:1.0
+    image: jaderwtb/cd-01_2025-server:latest
     container_name: server-container
     ports:
       - "4000:4000"
@@ -10,7 +9,7 @@ services:
     command: ["npm", "start"]
 
   project:
-    image: jaderwtb/cd-01_2025-project:1.0
+    image: jaderwtb/cd-01_2025-project:latest
     container_name: project-container
     depends_on:
       - server
