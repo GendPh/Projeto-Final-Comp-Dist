@@ -176,11 +176,10 @@ async function getUserIp() {
 
     // Validate the expected structure of the response
     if (!data || typeof data.ip !== "string") {
-      console.error("Unexpected response format from IP API.");
       return null; // Return null if the structure is invalid
     }
 
-    console.log(data.ip)
+
 
     return data.ip; // Return the user's IP address
   } catch (error) {

@@ -135,3 +135,4 @@ function searchRecipe(event) {
     recipesElement.innerHTML = "<p>No recipes found</p>";
   }
 }
+
